@@ -13,7 +13,9 @@ pipeline {
     stages{
         stage{
             steps{
-                sh "echo testing pipeline script "
+				script {
+					sh "echo testing pipeline script "
+				}
             } 
         }
     }
