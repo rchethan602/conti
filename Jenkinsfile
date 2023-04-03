@@ -8,4 +8,13 @@ pipeline {
         choice(name: 'DB_TYPE', choices: ['mongo', 'psql'], description: 'Target database type')
         string(name: 'VERSION', defaultValue: 'master', description: 'Git sha1, git tag or git branch for csmrck-backend repository. This is used to checkout the Jenkins pipeline code ')
     }
+	
+	
+    stages{
+        stage{
+            steps{
+                sh "echo testing pipeline script "
+            } 
+        }
+    }
 }
