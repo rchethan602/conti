@@ -13,9 +13,8 @@ pipeline {
     stages(deploy) {
         stage(Checking) {
             steps {
-				script {
+
 					sh "echo testing pipeline script "
-				}
             } 
         }
     }
