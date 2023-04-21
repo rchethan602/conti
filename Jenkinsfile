@@ -1,22 +1,53 @@
 pipeline {
     agent any
 
-    parameters {
-        choice(name: 'REGION', choices: ['eu-central-1','us-east-1', 'cn-north-1'], description: 'Target AWS region')
-        choice(name: 'PROJECT_NAME', choices: ['fcs', 'keycore'], description: 'Target application')
-        choice(name: 'NAMESPACE', choices: ['yosemite','sequoia','whiskeytown','demo','honda-sandbox','preprod','sandbox','demo','ioptesting','nissan-sandbox','preprod','rosie','santa-monica'], description: 'Target namespace in US', ui: 'radio')
-	choice(name: 'NAMESPACE', choices: ['preprod','wutai','qiyun','preprod','putuo'], description: 'Target namespace in CN')
-        choice(name: 'DB_TYPE', choices: ['mongo', 'psql'], description: 'Target database type')
-        string(name: 'VERSION', defaultValue: 'master', description: 'Git sha1, git tag or git branch for csmrck-backend repository. This is used to checkout the Jenkins pipeline code ')
-    }
-	
-	
-    stages(deploy) {
-        stage(Checking) {
-            steps {
-
-					sh "echo testing pipeline script "
-            } 
-        }
-    }
+properties([ 
+    parameters([
+        [
+            $class: 'ChoiceParameter', 
+            choiceType: 'PT_SINGLE_SELECT', 
+            description: 'Select a choice', 
+            filterLength: 1, 
+            filterable: true, 
+            name: 'choice1', 
+            randomName: 'choice-parameter-7601235200970', 
+            script: [
+                $class: 'GroovyScript', 
+                fallbackScript: [
+                    classpath: [], 
+                    sandbox: false, 
+                    script: 'return ["ERROR"]'
+                ], 
+                script: [
+                    classpath: [], 
+                    sandbox: false, 
+                    script: 'return[\'aaa\',\'bbb\']'
+                ]
+            ]
+        ], 
+        [
+            $class: 'CascadeChoiceParameter', 
+            choiceType: 'PT_SINGLE_SELECT', 
+            description: 'Active Choices Reactive parameter', 
+            filterLength: 1, 
+            filterable: true, 
+            name: 'choice2', 
+            randomName: 'choice-parameter-7601237141171', 
+            referencedParameters: 'choice1', 
+            script: [
+                $class: 'GroovyScript', 
+                fallbackScript: [
+                    classpath: [], 
+                    sandbox: false, 
+                    script: 'return ["error"]'
+                ], 
+                script: [
+                    classpath: [], 
+                    sandbox: false, 
+                    script: 'if(choice1.equals("aaa")){return [\'a\', \'b\']} else {return [\'aaaaaa\',\'fffffff\']}'
+                ]
+            ]
+        ]
+    ])
+])
 }
